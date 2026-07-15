@@ -22,7 +22,18 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rol'
     ];
+
+    public function estudiante()
+    {
+        return $this->hasOne(Estudiante::class);
+    }
+
+    public function empresa()
+    {
+        return $this->hasOne(Empresa::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
