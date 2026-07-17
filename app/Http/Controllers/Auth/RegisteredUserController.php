@@ -20,7 +20,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $carreras = \App\Models\Carrera::orderBy('nombre')->get();
+
+        return view('auth.register', compact('carreras'));
     }
 
     /**
@@ -34,13 +36,27 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'matricula' => ['required', 'string', 'max:20', 'unique:estudiantes,matricula'],
+            'carrera_id' => ['required', 'exists:carreras,id'],
+            'tipo' => ['required', 'in:estudiante,egresado'],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = \DB::transaction(function () use ($request) {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'rol' => 'estudiante',
+            ]);
+
+            $user->estudiante()->create([
+                'matricula' => $request->matricula,
+                'carrera_id' => $request->carrera_id,
+                'tipo' => $request->tipo,
+            ]);
+
+            return $user;
+        });
 
         event(new Registered($user));
 

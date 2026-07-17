@@ -16,6 +16,39 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Matrícula -->
+        <div class="mt-4">
+            <x-input-label for="matricula" :value="__('Matrícula')" />
+            <x-text-input id="matricula" class="block mt-1 w-full" type="text" name="matricula" :value="old('matricula')" required />
+            <x-input-error :messages="$errors->get('matricula')" class="mt-2" />
+        </div>
+
+        <!-- Carrera -->
+        <div class="mt-4">
+            <x-input-label for="carrera_id" :value="__('Carrera')" />
+            <select id="carrera_id" name="carrera_id" required
+                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                <option value="">Selecciona tu carrera</option>
+                @foreach ($carreras as $carrera)
+                    <option value="{{ $carrera->id }}" @selected(old('carrera_id') == $carrera->id)>
+                        {{ $carrera->nombre }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('carrera_id')" class="mt-2" />
+        </div>
+
+        <!-- Tipo -->
+        <div class="mt-4">
+            <x-input-label for="tipo" :value="__('Condición')" />
+            <select id="tipo" name="tipo" required
+                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                <option value="estudiante" @selected(old('tipo') == 'estudiante')>Estudiante activo</option>
+                <option value="egresado" @selected(old('tipo') == 'egresado')>Egresado</option>
+            </select>
+            <x-input-error :messages="$errors->get('tipo')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
