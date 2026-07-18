@@ -27,6 +27,8 @@ Route::middleware(['auth', 'rol:admin'])->prefix('admin')->name('admin.')->group
 
 Route::middleware(['auth', 'rol:empresa'])->prefix('empresa')->name('empresa.')->group(function () {
     Route::get('/dashboard', fn () => view('empresa.dashboard'))->name('dashboard');
+    Route::resource('vacantes', \App\Http\Controllers\Empresa\VacanteController::class)
+        ->only(['index', 'create', 'store']);
 });
 
 Route::middleware(['auth', 'rol:estudiante'])->prefix('estudiante')->name('estudiante.')->group(function () {
