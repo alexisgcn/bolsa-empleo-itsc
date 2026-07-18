@@ -1,9 +1,9 @@
 <x-guest-layout>
 
     <div class="mb-4 text-lg font-semibold text-gray-800 dark:text-gray-200">
-        {{ __('Registro de Estudiante/Egresado') }}
+        {{ __('Registro de Empresa') }}
     </div>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register.empresa') }}">
         @csrf
 
         <!-- Name -->
@@ -20,37 +20,25 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
-        <!-- Matrícula -->
+        <!-- Nombre de la empresa -->
         <div class="mt-4">
-            <x-input-label for="matricula" :value="__('Matrícula')" />
-            <x-text-input id="matricula" class="block mt-1 w-full" type="text" name="matricula" :value="old('matricula')" required />
-            <x-input-error :messages="$errors->get('matricula')" class="mt-2" />
+            <x-input-label for="nombre_empresa" :value="__('Nombre de la empresa')" />
+            <x-text-input id="nombre_empresa" class="block mt-1 w-full" type="text" name="nombre_empresa" :value="old('nombre_empresa')" required />
+            <x-input-error :messages="$errors->get('nombre_empresa')" class="mt-2" />
         </div>
 
-        <!-- Carrera -->
+        <!-- RNC -->
         <div class="mt-4">
-            <x-input-label for="carrera_id" :value="__('Carrera')" />
-            <select id="carrera_id" name="carrera_id" required
-                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                <option value="">Selecciona tu carrera</option>
-                @foreach ($carreras as $carrera)
-                    <option value="{{ $carrera->id }}" @selected(old('carrera_id') == $carrera->id)>
-                        {{ $carrera->nombre }}
-                    </option>
-                @endforeach
-            </select>
-            <x-input-error :messages="$errors->get('carrera_id')" class="mt-2" />
+            <x-input-label for="rnc" :value="__('RNC')" />
+            <x-text-input id="rnc" class="block mt-1 w-full" type="text" name="rnc" :value="old('rnc')" required />
+            <x-input-error :messages="$errors->get('rnc')" class="mt-2" />
         </div>
 
-        <!-- Tipo -->
+        <!-- Teléfono -->
         <div class="mt-4">
-            <x-input-label for="tipo" :value="__('Condición')" />
-            <select id="tipo" name="tipo" required
-                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                <option value="estudiante" @selected(old('tipo') == 'estudiante')>Estudiante activo</option>
-                <option value="egresado" @selected(old('tipo') == 'egresado')>Egresado</option>
-            </select>
-            <x-input-error :messages="$errors->get('tipo')" class="mt-2" />
+            <x-input-label for="telefono" :value="__('Teléfono')" />
+            <x-text-input id="telefono" class="block mt-1 w-full" type="text" name="telefono" :value="old('telefono')" />
+            <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
         </div>
 
         <!-- Password -->
@@ -78,8 +66,8 @@
 
         <div class="mt-4">
             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                href="{{ route('register.empresa') }}">
-                {{ __('¿Eres una empresa? Regístrate aquí') }}
+                href="{{ route('register') }}">
+                {{ __('¿Eres estudiante o egresado? Regístrate aquí') }}
             </a>
         </div>
 
