@@ -44,6 +44,10 @@ Route::middleware(['auth', 'rol:empresa'])->prefix('empresa')->name('empresa.')-
 
 Route::middleware(['auth', 'rol:estudiante'])->prefix('estudiante')->name('estudiante.')->group(function () {
     Route::get('/dashboard', fn () => view('estudiante.dashboard'))->name('dashboard');
+    Route::get('vacantes', [\App\Http\Controllers\Estudiante\VacanteController::class, 'index'])->name('vacantes.index');
+    Route::get('vacantes/{vacante}', [\App\Http\Controllers\Estudiante\VacanteController::class, 'show'])->name('vacantes.show');
+    Route::post('vacantes/{vacante}/postular', [\App\Http\Controllers\Estudiante\PostulacionController::class, 'store'])->name('vacantes.postular');
+    Route::get('postulaciones', [\App\Http\Controllers\Estudiante\PostulacionController::class, 'index'])->name('postulaciones.index');
 });
 
 require __DIR__.'/auth.php';
