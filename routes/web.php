@@ -23,10 +23,16 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'rol:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
+
+    Route::get('empresas', [\App\Http\Controllers\Admin\EmpresaController::class, 'index'])->name('empresas.index');
+    Route::patch('empresas/{empresa}/aprobar', [\App\Http\Controllers\Admin\EmpresaController::class, 'aprobar'])->name('empresas.aprobar');
+    Route::patch('empresas/{empresa}/bloquear', [\App\Http\Controllers\Admin\EmpresaController::class, 'bloquear'])->name('empresas.bloquear');
+    Route::patch('empresas/{empresa}/rechazar', [\App\Http\Controllers\Admin\EmpresaController::class, 'rechazar'])->name('empresas.rechazar');
 });
 
 Route::middleware(['auth', 'rol:empresa'])->prefix('empresa')->name('empresa.')->group(function () {
     Route::get('/dashboard', fn () => view('empresa.dashboard'))->name('dashboard');
+
     Route::resource('vacantes', \App\Http\Controllers\Empresa\VacanteController::class)
         ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::patch('vacantes/{vacante}/publicar', [\App\Http\Controllers\Empresa\VacanteController::class, 'publicar'])
