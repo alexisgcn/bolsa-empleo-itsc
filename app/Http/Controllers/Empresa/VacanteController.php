@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreVacanteRequest;
 use App\Models\Carrera;
+use App\Http\Requests\UpdateVacanteRequest;
 
 class VacanteController extends Controller
 {
@@ -44,6 +45,12 @@ class VacanteController extends Controller
     public function show(string $id)
     {
         //
+        $vacante = auth()->user()->empresa->vacantes()
+            ->with('carreras')
+            ->withCount('postulaciones')
+            ->findOrFail($id);
+
+        return view('empresa.vacantes.show', compact('vacante'));
     }
 
     /**
@@ -52,14 +59,25 @@ class VacanteController extends Controller
     public function edit(string $id)
     {
         //
+        $vacante = auth()->user()->empresa->vacantes()->with('carreras')->findOrFail($id);
+        $carreras = Carrera::orderBy('nombre')->get();
+
+        return view('empresa.vacantes.edit', compact('vacante', 'carreras'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateVacanteRequest $request, string $id)
     {
         //
+        $vacante = auth()->user()->empresa->vacantes()->findOrFail($id);
+
+        $vacante->update($request->validated());
+        $vacante->carreras()->sync($request->carreras);
+
+        return redirect()->route('empresa.vacantes.index')
+            ->with('status', 'Vacante actualizada.');
     }
 
     /**
@@ -68,5 +86,37 @@ class VacanteController extends Controller
     public function destroy(string $id)
     {
         //
+        $vacante = auth()->user()->empresa->vacantes()->findOrFail($id);
+
+        $vacante->delete();
+
+        return redirect()->route('empresa.vacantes.index')
+            ->with('status', 'Vacante eliminada.');
+    }
+
+    public function publicar(string $id)
+{
+    $vacante = auth()->user()->empresa->vacantes()->findOrFail($id);
+
+    try {
+        $vacante->publicar();
+    } catch (\RuntimeException $e) {
+        return back()->with('error', $e->getMessage());
+    }
+
+    return back()->with('status', 'Vacante publicada. Ya es visible para los estudiantes.');
+}
+
+    public function cerrar(string $id)
+    {
+        $vacante = auth()->user()->empresa->vacantes()->findOrFail($id);
+
+        try {
+            $vacante->cerrar();
+        } catch (\RuntimeException $e) {
+            return back()->with('error', $e->getMessage());
+        }
+
+        return back()->with('status', 'Vacante cerrada. Ya no acepta nuevas postulaciones.');
     }
 }

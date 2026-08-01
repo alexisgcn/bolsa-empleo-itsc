@@ -28,7 +28,12 @@ Route::middleware(['auth', 'rol:admin'])->prefix('admin')->name('admin.')->group
 Route::middleware(['auth', 'rol:empresa'])->prefix('empresa')->name('empresa.')->group(function () {
     Route::get('/dashboard', fn () => view('empresa.dashboard'))->name('dashboard');
     Route::resource('vacantes', \App\Http\Controllers\Empresa\VacanteController::class)
-        ->only(['index', 'create', 'store']);
+        ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+    Route::patch('vacantes/{vacante}/publicar', [\App\Http\Controllers\Empresa\VacanteController::class, 'publicar'])
+    ->name('vacantes.publicar');
+
+    Route::patch('vacantes/{vacante}/cerrar', [\App\Http\Controllers\Empresa\VacanteController::class, 'cerrar'])
+    ->name('vacantes.cerrar');
 });
 
 Route::middleware(['auth', 'rol:estudiante'])->prefix('estudiante')->name('estudiante.')->group(function () {
