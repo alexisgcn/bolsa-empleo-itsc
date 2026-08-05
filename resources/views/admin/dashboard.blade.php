@@ -13,6 +13,7 @@
 
                     <div class="mt-4">
                         <a href="{{ route('admin.empresas.index') }}" class="underline text-indigo-600">Gestionar empresas</a>
+                        <a href="{{ route('admin.carreras.index') }}" class="underline text-indigo-600 ml-4">Gestionar carreras</a>
                     </div>
                 </div>
             </div>
