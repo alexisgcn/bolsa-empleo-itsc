@@ -40,6 +40,16 @@ Route::middleware(['auth', 'rol:empresa'])->prefix('empresa')->name('empresa.')-
 
     Route::patch('vacantes/{vacante}/cerrar', [\App\Http\Controllers\Empresa\VacanteController::class, 'cerrar'])
     ->name('vacantes.cerrar');
+
+    Route::get('vacantes/{vacante}/postulaciones', [\App\Http\Controllers\Empresa\PostulacionController::class, 'index'])
+    ->name('vacantes.postulaciones.index');
+
+    Route::patch('postulaciones/{postulacion}/en-revision', [\App\Http\Controllers\Empresa\PostulacionController::class, 'enRevision'])
+        ->name('postulaciones.en_revision');
+    Route::patch('postulaciones/{postulacion}/aceptar', [\App\Http\Controllers\Empresa\PostulacionController::class, 'aceptar'])
+        ->name('postulaciones.aceptar');
+    Route::patch('postulaciones/{postulacion}/rechazar', [\App\Http\Controllers\Empresa\PostulacionController::class, 'rechazar'])
+        ->name('postulaciones.rechazar');
 });
 
 Route::middleware(['auth', 'rol:estudiante'])->prefix('estudiante')->name('estudiante.')->group(function () {

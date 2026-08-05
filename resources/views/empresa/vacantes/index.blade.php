@@ -55,6 +55,7 @@
                                     <div class="flex items-center gap-3">
                                         <a href="{{ route('empresa.vacantes.show', $vacante) }}" class="text-sm underline text-gray-600 dark:text-gray-400">Ver</a>
                                         <a href="{{ route('empresa.vacantes.edit', $vacante) }}" class="text-sm underline text-indigo-600">Editar</a>
+                                        <a href="{{ route('empresa.vacantes.postulaciones.index', $vacante) }}" class="text-sm underline text-blue-600">Postulantes ({{ $vacante->postulaciones_count }})</a>
 
                                         @if ($vacante->estado === 'borrador')
                                             <form method="POST" action="{{ route('empresa.vacantes.publicar', $vacante) }}" class="inline">
