@@ -19,12 +19,24 @@
                 </div>
             @endif
 
-            <div class="mb-4">
-                <a href="{{ route('empresa.vacantes.create') }}"
-                   class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700">
-                    {{ __('Nueva Vacante') }}
-                </a>
-            </div>
+            @if (auth()->user()->empresa->estado !== 'aprobada')
+                <div class="mb-4 p-4 bg-yellow-100 text-yellow-800 rounded-md">
+                    @if (auth()->user()->empresa->estado === 'pendiente')
+                        Tu empresa está pendiente de aprobación por el administrador. Podrás publicar vacantes una vez sea aprobada.
+                    @elseif (auth()->user()->empresa->estado === 'bloqueada')
+                        Tu empresa ha sido bloqueada por el administrador. Contacta al ITSC para más información.
+                    @else
+                        Tu empresa no está habilitada para publicar vacantes en este momento.
+                    @endif
+                </div>
+            @else
+                <div class="mb-4">
+                    <a href="{{ route('empresa.vacantes.create') }}"
+                       class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700">
+                        {{ __('Nueva Vacante') }}
+                    </a>
+                </div>
+            @endif
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

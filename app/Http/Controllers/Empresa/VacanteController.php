@@ -24,6 +24,10 @@ class VacanteController extends Controller
 
     public function create()
     {
+        if (auth()->user()->empresa->estado !== 'aprobada') {
+            return redirect()->route('empresa.vacantes.index')
+                ->with('error', 'No puedes crear vacantes hasta que tu empresa sea aprobada por un administrador.');
+        }
         $carreras = Carrera::orderBy('nombre')->get();
 
         return view('empresa.vacantes.create', compact('carreras'));
