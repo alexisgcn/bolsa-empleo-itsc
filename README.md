@@ -1,59 +1,117 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Bolsa de Empleo del ITSC
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Plataforma web que conecta a estudiantes y egresados del Instituto Técnico Superior Comunitario (ITSC) con empresas que publican ofertas de empleo y pasantías.
 
-## About Laravel
+Proyecto final de la asignatura **SOF-111 — Construcción de Software**, profesor Carlos Adames. El proyecto continúa en la asignatura SOF-113 con el mismo código base.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Stack tecnológico
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Backend:** PHP 8.2 + Laravel 11
+- **Base de datos:** MySQL
+- **Autenticación:** Laravel Breeze
+- **Frontend:** Blade + Tailwind CSS + Alpine.js
+- **Control de versiones:** Git / GitHub
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Actores del sistema
 
-## Learning Laravel
+| Actor | Descripción |
+|---|---|
+| **Administrador** | Aprueba o bloquea empresas, gestiona el catálogo de carreras y los usuarios del sistema. |
+| **Empresa** | Se registra, publica y gestiona vacantes, y revisa/gestiona las postulaciones recibidas. |
+| **Estudiante / Egresado** | Se registra con su matrícula y carrera, explora vacantes dirigidas a su carrera, se postula y gestiona su perfil con CV. |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Funcionalidades principales
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Registro diferenciado para estudiantes/egresados y empresas, con validaciones de unicidad (email, matrícula, RNC).
+- Aprobación de empresas por el administrador antes de poder publicar vacantes.
+- CRUD completo de vacantes con ciclo de vida controlado: `borrador → publicada → cerrada`.
+- Postulación de estudiantes a vacantes dirigidas a su carrera, con prevención de postulaciones duplicadas.
+- Gestión de postulaciones por la empresa con flujo de estados: `recibida → en revisión → aceptada / rechazada`.
+- Perfil de estudiante con carga de currículum (PDF).
+- Gestión de usuarios (bloqueo/activación) y catálogo de carreras por el administrador.
+- Roles y permisos aplicados por middleware en cada grupo de rutas.
 
-## Laravel Sponsors
+## Modelo de datos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+7 tablas: `users`, `estudiantes`, `empresas`, `carreras`, `vacantes`, `vacante_carrera` (pivote N:M), `postulaciones`.
 
-### Premium Partners
+## Instalación local
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Requisitos previos
 
-## Contributing
+- PHP >= 8.2 con Composer
+- MySQL (por ejemplo, vía XAMPP)
+- Node.js y npm
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Pasos
 
-## Code of Conduct
+```bash
+# Clonar el repositorio
+git clone https://github.com/alexisgcn/bolsa-empleo-itsc.git
+cd bolsa-empleo-itsc
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Instalar dependencias de PHP
+composer install
 
-## Security Vulnerabilities
+# Configurar el entorno
+cp .env.example .env
+php artisan key:generate
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Edita el archivo `.env` con los datos de tu base de datos local:
 
-## License
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=bolsa_empleo_itsc
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Crea la base de datos vacía (por ejemplo, en MySQL Workbench o phpMyAdmin):
+
+```sql
+CREATE DATABASE bolsa_empleo_itsc CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+Continúa con las migraciones, seeders y dependencias de frontend:
+
+```bash
+php artisan migrate --seed
+npm install
+npm run build
+
+php artisan storage:link
+php artisan serve
+```
+
+La aplicación queda disponible en `http://127.0.0.1:8000`.
+
+### Cuenta de administrador por defecto
+
+El seeder crea una cuenta de administrador inicial:
+
+- **Correo:** admin@itsc.edu.do
+- **Contraseña:** admin1234
+
+> Se recomienda cambiar esta contraseña en cualquier entorno que no sea de desarrollo local.
+
+## Desarrollo
+
+Durante el desarrollo activo (edición de archivos Blade), se recomienda correr Vite en modo watch en una terminal aparte para recompilar los estilos automáticamente:
+
+```bash
+npm run dev
+```
+
+Antes de una demostración o entrega, deténlo y corre `npm run build` para generar los assets de forma estable.
+
+## Equipo
+
+- **Desarrollo:** Alexis Carmona
+- **Documentación:** [nombre del compañero]
+
+## Licencia
+
+Proyecto académico desarrollado para el Instituto Técnico Superior Comunitario (ITSC).
