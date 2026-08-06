@@ -22,7 +22,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'rol:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', fn () => view('admin.dashboard'))->name('dashboard');
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard', [
+            'totalEstudiantes' => \App\Models\Estudiante::count(),
+            'empresasAprobadas' => \App\Models\Empresa::where('estado', 'aprobada')->count(),
+            'empresasPendientes' => \App\Models\Empresa::where('estado', 'pendiente')->count(),
+            'vacantesActivas' => \App\Models\Vacante::where('estado', 'publicada')->count(),
+        ]);
+    })->name('dashboard');
 
     Route::get('empresas', [\App\Http\Controllers\Admin\EmpresaController::class, 'index'])->name('empresas.index');
     Route::patch('empresas/{empresa}/aprobar', [\App\Http\Controllers\Admin\EmpresaController::class, 'aprobar'])->name('empresas.aprobar');
@@ -39,7 +46,15 @@ Route::middleware(['auth', 'rol:admin'])->prefix('admin')->name('admin.')->group
 });
 
 Route::middleware(['auth', 'rol:empresa'])->prefix('empresa')->name('empresa.')->group(function () {
-    Route::get('/dashboard', fn () => view('empresa.dashboard'))->name('dashboard');
+    Route::get('/dashboard', function () {
+        $empresa = auth()->user()->empresa;
+
+        return view('empresa.dashboard', [
+            'vacantesActivas' => $empresa->vacantes()->where('estado', 'publicada')->count(),
+            'postulacionesRecibidas' => \App\Models\Postulacion::whereHas('vacante', fn ($q) => $q->where('empresa_id', $empresa->id))->count(),
+            'pendientesRevisar' => \App\Models\Postulacion::whereHas('vacante', fn ($q) => $q->where('empresa_id', $empresa->id))->where('estado', 'recibida')->count(),
+        ]);
+    })->name('dashboard');
 
     Route::resource('vacantes', \App\Http\Controllers\Empresa\VacanteController::class)
         ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
@@ -61,7 +76,18 @@ Route::middleware(['auth', 'rol:empresa'])->prefix('empresa')->name('empresa.')-
 });
 
 Route::middleware(['auth', 'rol:estudiante'])->prefix('estudiante')->name('estudiante.')->group(function () {
-    Route::get('/dashboard', fn () => view('estudiante.dashboard'))->name('dashboard');
+    Route::get('/dashboard', function () {
+        $estudiante = auth()->user()->estudiante;
+
+        return view('estudiante.dashboard', [
+            'vacantesDisponibles' => \App\Models\Vacante::where('estado', 'publicada')
+                ->whereHas('carreras', fn ($q) => $q->where('carreras.id', $estudiante->carrera_id))
+                ->count(),
+            'misPostulaciones' => $estudiante->postulaciones()->count(),
+            'postulacionesAceptadas' => $estudiante->postulaciones()->where('estado', 'aceptada')->count(),
+        ]);
+    })->name('dashboard');
+
     Route::get('vacantes', [\App\Http\Controllers\Estudiante\VacanteController::class, 'index'])->name('vacantes.index');
     Route::get('vacantes/{vacante}', [\App\Http\Controllers\Estudiante\VacanteController::class, 'show'])->name('vacantes.show');
     Route::post('vacantes/{vacante}/postular', [\App\Http\Controllers\Estudiante\PostulacionController::class, 'store'])->name('vacantes.postular');
