@@ -105,12 +105,10 @@ Durante el desarrollo activo (edición de archivos Blade), se recomienda correr 
 npm run dev
 ```
 
-Antes de una demostración o entrega, deténlo y corre `npm run build` para generar los assets de forma estable.
-
 ## Equipo
 
 - **Desarrollo:** Alexis Carmona
-- **Documentación:** [nombre del compañero]
+- **Documentación:** Gildebran Ventura
 
 ## Licencia
 
