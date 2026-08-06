@@ -63,6 +63,9 @@ Route::middleware(['auth', 'rol:estudiante'])->prefix('estudiante')->name('estud
     Route::get('vacantes/{vacante}', [\App\Http\Controllers\Estudiante\VacanteController::class, 'show'])->name('vacantes.show');
     Route::post('vacantes/{vacante}/postular', [\App\Http\Controllers\Estudiante\PostulacionController::class, 'store'])->name('vacantes.postular');
     Route::get('postulaciones', [\App\Http\Controllers\Estudiante\PostulacionController::class, 'index'])->name('postulaciones.index');
+
+    Route::get('perfil', [\App\Http\Controllers\Estudiante\PerfilController::class, 'edit'])->name('perfil.edit');
+    Route::post('perfil', [\App\Http\Controllers\Estudiante\PerfilController::class, 'update'])->name('perfil.update');
 });
 
 require __DIR__.'/auth.php';

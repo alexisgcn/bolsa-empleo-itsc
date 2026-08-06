@@ -14,6 +14,7 @@
                     <div class="mt-4 space-x-4">
                         <a href="{{ route('estudiante.vacantes.index') }}" class="underline text-indigo-600">Ver vacantes</a>
                         <a href="{{ route('estudiante.postulaciones.index') }}" class="underline text-indigo-600">Mis postulaciones</a>
+                        <a href="{{ route('estudiante.perfil.edit') }}" class="underline text-indigo-600">Mi perfil</a>
                     </div>
                 </div>
             </div>
