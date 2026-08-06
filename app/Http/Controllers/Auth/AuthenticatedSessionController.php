@@ -24,6 +24,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+
+        $request->authenticate();
+
+        if (auth()->user()->email_verified_at === null) {
+            auth()->logout();
+
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'email' => 'Tu cuenta ha sido bloqueada por el administrador.',
+            ]);
+        }
+
+        $request->session()->regenerate();
+        
         $request->authenticate();
 
         $request->session()->regenerate();

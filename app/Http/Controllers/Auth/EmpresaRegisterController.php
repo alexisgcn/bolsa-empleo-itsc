@@ -37,6 +37,7 @@ class EmpresaRegisterController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'rol' => 'empresa',
+                'email_verified_at' => now(),
             ]);
 
             $user->empresa()->create([

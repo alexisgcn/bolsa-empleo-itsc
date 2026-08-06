@@ -33,6 +33,9 @@ Route::middleware(['auth', 'rol:admin'])->prefix('admin')->name('admin.')->group
     Route::post('carreras', [\App\Http\Controllers\Admin\CarreraController::class, 'store'])->name('carreras.store');
     Route::patch('carreras/{carrera}', [\App\Http\Controllers\Admin\CarreraController::class, 'update'])->name('carreras.update');
     Route::delete('carreras/{carrera}', [\App\Http\Controllers\Admin\CarreraController::class, 'destroy'])->name('carreras.destroy');
+    Route::get('usuarios', [\App\Http\Controllers\Admin\UsuarioController::class, 'index'])->name('usuarios.index');
+    Route::patch('usuarios/{usuario}/bloquear', [\App\Http\Controllers\Admin\UsuarioController::class, 'bloquear'])->name('usuarios.bloquear');
+    Route::patch('usuarios/{usuario}/activar', [\App\Http\Controllers\Admin\UsuarioController::class, 'activar'])->name('usuarios.activar');
 });
 
 Route::middleware(['auth', 'rol:empresa'])->prefix('empresa')->name('empresa.')->group(function () {
