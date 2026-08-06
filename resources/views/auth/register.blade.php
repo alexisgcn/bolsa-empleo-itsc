@@ -31,7 +31,7 @@
         <div class="mt-4">
             <x-input-label for="carrera_id" :value="__('Carrera')" />
             <select id="carrera_id" name="carrera_id" required
-                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="block mt-1 w-full border-gray-300 focus:border-[#042C53] focus:ring-[#A32D2D] rounded-md shadow-sm">
                 <option value="">Selecciona tu carrera</option>
                 @foreach ($carreras as $carrera)
                     <option value="{{ $carrera->id }}" @selected(old('carrera_id') == $carrera->id)>
@@ -46,7 +46,7 @@
         <div class="mt-4">
             <x-input-label for="tipo" :value="__('Condición')" />
             <select id="tipo" name="tipo" required
-                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="block mt-1 w-full border-gray-300 focus:border-[#042C53] focus:ring-[#A32D2D] rounded-md shadow-sm">
                 <option value="estudiante" @selected(old('tipo') == 'estudiante')>Estudiante activo</option>
                 <option value="egresado" @selected(old('tipo') == 'egresado')>Egresado</option>
             </select>
@@ -77,14 +77,14 @@
         </div>
 
         <div class="mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A32D2D]"
                 href="{{ route('register.empresa') }}">
                 {{ __('¿Eres una empresa? Regístrate aquí') }}
             </a>
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#A32D2D]" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
             </a>
 
