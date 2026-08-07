@@ -109,7 +109,7 @@ npm run dev
 
 - **Desarrollo:** Alexis Carmona
 - **Documentación:** Gildebran Ventura
-
+- **Apoyo en documentación:** Madelin Decena
 ## Licencia
 
 Proyecto académico desarrollado para el Instituto Técnico Superior Comunitario (ITSC).
